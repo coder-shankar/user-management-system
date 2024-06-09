@@ -1,13 +1,13 @@
 package com.example.user_management_system.user;
 
 
+import com.example.user_management_system.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,9 +23,10 @@ public class UserService {
         return mapper.toDto(user);
     }
 
-    public Optional<UserDto> getUserByUsername(String username) {
+    public UserDto getUserByUsername(String username) {
         return repository.findByUsername(username)
-                         .map(mapper::toDto);
+                         .map(mapper::toDto)
+                         .orElseThrow(() -> new ResourceNotFoundException("User not Found"));
     }
 
     public List<UserDto> getUsersByFirstName(String firstName) {
@@ -41,15 +42,16 @@ public class UserService {
                          .toList();
     }
 
-    public Optional<UserDto> getUserByEmail(String email) {
+    public UserDto getUserByEmail(String email) {
         return repository.findByEmail(email)
-                         .map(mapper::toDto);
+                         .map(mapper::toDto)
+                         .orElseThrow(() -> new ResourceNotFoundException("User not Found"));
     }
 
     public UserDto updateUser(Long id, UserDto userDetails) {
         Long userId = repository.findById(id)
                                 .map(User::getId)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         User user = mapper.toEntity(userDetails);
         user.setId(userId);
         repository.save(user);
