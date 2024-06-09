@@ -16,7 +16,7 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
-    private UserMapper mapper;
+    protected UserMapper mapper;
 
     public UserDto createUser(UserDto dto) {
         User user = repository.save(mapper.toEntity(dto));
