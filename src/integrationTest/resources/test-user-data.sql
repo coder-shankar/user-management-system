@@ -54,3 +54,7 @@ INSERT INTO user_info (date_of_birth, email, first_name, last_name, username) VA
 ('1982-11-29', 'michael.williams53@mail.com', 'Michael', 'Williams', 'michael.williams53'),
 ('1979-03-11', 'emily.brown54@mail.com', 'Emily', 'Brown', 'emily.brown54'),
 ('2004-06-26', 'david.jones55@mail.com', 'David', 'Jones', 'david.jones55');
+
+--admin
+INSERT INTO public.user_info (id, date_of_birth, email, first_name, last_name, username)
+VALUES (155, '2024-06-02', 'admin@mail.com', 'admin', 'admin', 'admin');

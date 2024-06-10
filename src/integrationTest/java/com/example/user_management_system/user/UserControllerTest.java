@@ -1,5 +1,6 @@
 package com.example.user_management_system.user;
 
+import com.example.user_management_system.auth.AuthenticationResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -44,9 +45,12 @@ public class UserControllerTest {
         postgres.start();
     }
 
+    String token = "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MTgwMDA0MTh9.gVr9IQzWtm58kzx0dYvwbZ6RtjqStqKO9tc4b1-U548NHBwhuSZ-0HhRfDzyZStv8A5A1n04hCwwzzQ9AaLfaQ";
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+        token = getToken();
     }
 
     @Test
@@ -60,6 +64,7 @@ public class UserControllerTest {
         var request = given()
                 .log()
                 .everything()
+                .header("Authorization", "Bearer " + token)
                 .body(body)
                 .contentType(ContentType.JSON);
 
@@ -85,6 +90,7 @@ public class UserControllerTest {
         var request = given()
                 .log()
                 .everything()
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON);
 
         var response = request.when()
@@ -99,6 +105,19 @@ public class UserControllerTest {
                 .body("content", hasSize(greaterThan(0)));
     }
 
+    private String getToken() {
+        var request = given()
+                .log()
+                .everything()
+                .body(Map.of("username", "admin", "password", "admin"))
+                .contentType(ContentType.JSON);
+
+        return request.when()
+                      .post("/auth/login")
+                      .getBody()
+                      .as(AuthenticationResponse.class)
+                      .getToken();
+    }
 
     @AfterAll
     static void destroy() {
