@@ -1,6 +1,7 @@
 package com.example.user_management_system.user;
 
 
+import com.example.user_management_system.exception.BadRequestException;
 import com.example.user_management_system.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,15 @@ public class UserService {
     protected UserMapper mapper;
 
     public UserDto createUser(UserDto dto) {
+        Optional<User> existingUser = repository.findByUsername(dto.getUsername());
+        if (existingUser.isPresent()) {
+            throw new BadRequestException("User Already created");
+        }
+
+        Optional<User> userByEmail = repository.findByEmail(dto.getEmail());
+        if (userByEmail.isPresent())
+            throw new BadRequestException("User Already created");
+
         User user = repository.save(mapper.toEntity(dto));
         return mapper.toDto(user);
     }
