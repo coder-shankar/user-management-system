@@ -1,6 +1,7 @@
 package com.example.user_management_system.user;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.List;
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "User API", description = "API to manage users")
+@SecurityRequirement(name = "Authorization")
 public class UserController {
 
     @Autowired
