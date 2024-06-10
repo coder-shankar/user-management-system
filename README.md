@@ -41,7 +41,7 @@ Run the following command to execute integration tests:
 ./gradlew bootRun
 ```
 
-* Patch `patch.sql` file in classpath resources to database
+* use patch `patch.sql` file in classpath resources to database
 * use username `admin` and password `admin` to get token from login api.
 * user Bearer token for authorization in rest of the API
 
