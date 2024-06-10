@@ -14,6 +14,7 @@ Make sure you have the following installed:
 * SpringBoot 3
 * Postgres
 * java 17
+* gradle
 * Swagger 
   
 
